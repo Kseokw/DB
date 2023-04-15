@@ -27,17 +27,17 @@ FOREIGN KEY (theaterid,cinemaid)
     REFERENCES cinema(theaterid,cinemaid) ON DELETE CASCADE,
 FOREIGN KEY (guestid) REFERENCES guest(guestid) ON DELETE CASCADE);
 
-INSERT INTO theater VALUES(1,'·Ôµ¥','Àá½Ç');
-INSERT INTO theater VALUES(2,'¸Ş°¡','°­³²');
-INSERT INTO theater VALUES(3,'´ëÇÑ','Àá½Ç');
+INSERT INTO theater VALUES(1,'ë¡¯ë°','ì ì‹¤');
+INSERT INTO theater VALUES(2,'ë©”ê°€','ê°•ë‚¨');
+INSERT INTO theater VALUES(3,'ëŒ€í•œ','ì ì‹¤');
 
-INSERT INTO guest VALUES(3,'È«±æµ¿','°­³²');
-INSERT INTO guest VALUES(4,'±èÃ¶¼ö','Àá½Ç');
-INSERT INTO guest VALUES(9,'¹Ú¿µÈñ','°­³²');
+INSERT INTO guest VALUES(3,'í™ê¸¸ë™','ê°•ë‚¨');
+INSERT INTO guest VALUES(4,'ê¹€ì² ìˆ˜','ì ì‹¤');
+INSERT INTO guest VALUES(9,'ë°•ì˜í¬','ê°•ë‚¨');
 
-INSERT INTO cinema VALUES(1,1,'¾î·Á¿î ¿µÈ­','15000','48');
-INSERT INTO cinema VALUES(3,1,'¸ÚÁø ¿µÈ­','7500','120');
-INSERT INTO cinema VALUES(3,2,'Àç¹Õ´Â ¿µÈ­','8000','110');
+INSERT INTO cinema VALUES(1,1,'ì–´ë ¤ìš´ ì˜í™”','15000','48');
+INSERT INTO cinema VALUES(3,1,'ë©‹ì§„ ì˜í™”','7500','120');
+INSERT INTO cinema VALUES(3,2,'ì¬ë°ŒëŠ” ì˜í™”','8000','110');
 
 INSERT INTO reservation VALUES(3,2,3,15,'2020-09-01');
 INSERT INTO reservation VALUES(3,1,4,16,'2020-09-01');
@@ -51,12 +51,12 @@ FROM theater;
 /*1-2*/
 SELECT *
 FROM theater
-WHERE place='Àá½Ç';
+WHERE place='ì ì‹¤';
 
 /*1-3*/
 SELECT name
 FROM guest
-WHERE adress='Àá½Ç'
+WHERE adress='ì ì‹¤'
 ORDER BY name ASC;
 
 /*1-4*/
@@ -70,7 +70,7 @@ FROM theater,guest
 WHERE place = adress;
 
 /*2-1*/
-SELECT COUNT(*) AS ±ØÀå°³¼ö
+SELECT COUNT(*) AS ê·¹ì¥ê°œìˆ˜
 FROM theater;
 
 /*2-2*/
@@ -78,41 +78,41 @@ SELECT ROUND(AVG(price),0)
 FROM cinema;
 
 /*2-3*/
-SELECT COUNT(*) AS °ü¶÷°í°´¼ö
+SELECT COUNT(*) AS ê´€ëŒê³ ê°ìˆ˜
 FROM reservation
 WHERE da='2020-09-01';
 
 /*3-1*/
 SELECT title
 FROM theater,cinema
-WHERE theater.theaterid=cinema.theaterid AND theatername='´ëÇÑ';
+WHERE theater.theaterid=cinema.theaterid AND theatername='ëŒ€í•œ';
 
 /*3-2*/
 SELECT name
 FROM theater,reservation,guest
 WHERE theater.theaterid=reservation.theaterid
     AND reservation.guestid=guest.guestid
-    AND theatername LIKE '´ëÇÑ';
+    AND theatername LIKE 'ëŒ€í•œ';
 
 SELECT name
 FROM reservation,guest
 WHERE reservation.guestid=guest.guestid 
     AND theaterid IN (SELECT theaterid
                         FROM theater
-                        WHERE theatername = '´ëÇÑ');
+                        WHERE theatername = 'ëŒ€í•œ');
 /*3-3*/
 SELECT SUM(price)
 FROM theater,cinema,reservation
 WHERE theater.theaterid=reservation.theaterid
     AND cinema.cinemaid=reservation.cinemaid
-    AND theatername='´ëÇÑ';
+    AND theatername='ëŒ€í•œ';
 
 SELECT SUM(price)
 FROM cinema,reservation
 WHERE cinema.cinemaid=reservation.cinemaid
     AND reservation.theaterid IN (SELECT theaterid
                         FROM theater
-                        WHERE theatername = '´ëÇÑ');
+                        WHERE theatername = 'ëŒ€í•œ');
 
 /*4-1*/
 SELECT theaterid,COUNT(cinemaid)
@@ -122,15 +122,15 @@ GROUP BY theaterid;
 /*4-2*/
 SELECT theatername,COUNT(cinemaid)
 FROM theater,cinema
-WHERE theater.theaterid=cinema.theaterid AND place LIKE 'Àá½Ç'
+WHERE theater.theaterid=cinema.theaterid AND place LIKE 'ì ì‹¤'
 GROUP BY theatername;
 
 SELECT place,theatername,cinemaid,title,price,seat
 FROM theater,cinema
-WHERE theater.theaterid=cinema.theaterid AND place LIKE 'Àá½Ç';
+WHERE theater.theaterid=cinema.theaterid AND place LIKE 'ì ì‹¤';
 
 /*4-3*/
-SELECT theatername,COUNT(guestid) AS °ü¶÷°´¼ö
+SELECT theatername,COUNT(guestid) AS ê´€ëŒê°ìˆ˜
 FROM theater,reservation
 WHERE theater.theaterid=reservation.theaterid
     AND da LIKE '2020-09-01'
